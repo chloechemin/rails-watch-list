@@ -18,15 +18,20 @@ require "rest-client"
 
 # TODO: Write a seed to insert 10 posts in the database fetched from the Hacker News API.
 
-response = RestClient.get "https://hacker-news.firebaseio.com/v0/topstories.json"
+response = RestClient.get "https://tmdb.lewagon.com/movie/top_rated"
 repos = JSON.parse(response)
 
-first_ten_repos = repos[0..9]
+first_fifty_repos = repos[0..49]
 # [31121319, 31129484, 31123683, 31108652, 31093430, 31107446, 31107591, 31094301, 31116024, 31128903]
 
-first_ten_repos.each do |first_ten_repo|
-  response1 = RestClient.get "https://hacker-news.firebaseio.com/v0/item/#{first_ten_repo}.json"
+first_fifty_repos.each do |ffirst_fifty_repo|
+  response1 = RestClient.get "https://tmdb.lewagon.com/movie/top_rated"
   repos1 = JSON.parse(response1)
-  i = Post.create(id: repos1["id"], title: repos1["title"], url: repos1["url"])
+  i = Movie.create(id: repos1["id"], title: repos1["title"], title: repos1["title"], poster_url: repos1["poster_url"], rating: repos1["vote_average"])
   p i
 end
+
+t.string "title"
+t.text "overview"
+t.string "poster_url"
+t.integer "rating"
